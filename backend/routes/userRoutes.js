@@ -15,8 +15,8 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.loginUser(req.body.email, req.body.password);
     const token = await user.generateAuthTokens();
-    res.cookie("token", token, { httpOnly: true });
-    res.redirect("/");
+    // res.cookie("token", token, { httpOnly: true });
+    res.send(token);
   } catch (error) {
     res.render("login", { error: "Wrong password or username" });
   }
@@ -31,20 +31,24 @@ router.get("/create-account", (req, res) => {
 router.post("/create-account", async (req, res) => {
   try {
     const user = req.body;
+    console.log(user);
     const userExists = await User.find({ email: user.email });
+    console.log(userExists);
     if (userExists.length === 0) {
       const account = new User({
         name: user.name,
         email: user.email,
         password: user.password,
       });
-      await account.generateAuthTokens();
+      const a = await account.generateAuthTokens();
+      // console.log(a);
       await account.save();
-      res.redirect("/");
+      res.json(account);
     } else {
       res.render("signup", { error: "User Exists" });
     }
   } catch (error) {
+    console.log(error);
     res.redirect("/login");
   }
 });

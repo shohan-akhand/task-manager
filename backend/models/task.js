@@ -8,6 +8,12 @@ const TaskSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  priority: {
+    type: String,
+  },
+  type: {
+    type: String,
+  },
 });
 
 const Task = mongoose.model("Task", TaskSchema);

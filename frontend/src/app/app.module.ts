@@ -5,19 +5,18 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent
-  ],
+  declarations: [AppComponent, NavComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserModule,
-    TaskModule
+    TaskModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -19,6 +19,8 @@ router.post("/", async (req, res) => {
   const task = new Task({
     title: req.body.title,
     description: req.body.description,
+    priority: req.body.priority,
+    type: req.body.type,
   });
   try {
     const newTask = await task.save();
@@ -30,6 +32,7 @@ router.post("/", async (req, res) => {
 
 async function getTask(req, res, next) {
   let task;
+  console.log("get task", req.params.id);
   try {
     task = await Task.findById(req.params.id);
     if (task == null) {
@@ -38,7 +41,8 @@ async function getTask(req, res, next) {
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
-  res.task = task;
+  req.task = task;
+  next();
 }
 
 //get a specific task by ID
@@ -50,14 +54,24 @@ router.get("/:id", getTask, (req, res) => {
 //update the specific task by ID
 
 router.patch("/:id", getTask, async (req, res) => {
+  // const task = req.task;
+  console.log(req.body.title);
+  console.log(req.task.title);
   if (req.body.title != null) {
-    res.task.title = req.body.title;
+    req.task.title = req.body?.title;
   }
+
   if (req.body.description != null) {
-    res.task.description = req.body.description;
+    req.task.description = req.body.description;
+  }
+  if (req.body.priority != null) {
+    req.task.priority = req.body.priority;
+  }
+  if (req.body.type != null) {
+    req.task.type = req.body.type;
   }
   try {
-    const updateTask = await res.task.save();
+    const updateTask = await req.task.save();
     res.json(updateTask);
   } catch (err) {
     res.status(400).json({ message: err.message });
