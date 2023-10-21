@@ -1,0 +1,157 @@
+<div class="bg-gradient-to-r from-purple-200 via-pink-200 to-red-200 p-8 rounded-lg">
+    <h3 class="text-2xl font-bold mb-4 text-black">Create a task</h3>
+    <form *ngIf="taskForm" [formGroup]="taskForm" (ngSubmit)="addTask()" class="space-y-4">
+        <div class="mb-4">
+            <label for="title" class="text-sm font-semibold mb-1 block text-black">Title</label>
+            <input id="title" type="text" formControlName="title"
+                class="border py-2 px-3 rounded focus:outline-none text-black focus:border-blue-500 w-full"
+                placeholder="Enter title">
+            <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched"
+                class="text-red-500 text-xs mt-1">Title is required</div>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="text-sm font-semibold mb-1 block text-black">Description</label>
+            <textarea id="description" formControlName="description"
+                class="border py-2 px-3 rounded focus:outline-none text-black focus:border-blue-500 w-full"
+                placeholder="Enter description"></textarea>
+        </div>
+        <div class="mb-4">
+            <label class="text-sm font-semibold mb-1 block text-black">Priority</label>
+            <label class="inline-flex items-center">
+                <input type="radio" value="low" formControlName="priority"
+                    class="form-radio h-5 w-5 text-blue-600">
+                <span class="ml-2 text-green-900">Low</span>
+            </label>
+            <label class="inline-flex items-center ml-4">
+                <input type="radio" value="high" formControlName="priority"
+                    class="form-radio h-5 w-5 text-blue-600">
+                <span class="ml-2 text-red-900">High</span>
+            </label>
+            <div *ngIf="taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched"
+                class="text-red-500 text-xs mt-1">Priority is required</div>
+        </div>
+        <div class="mb-4">
+            <label class="text-sm font-semibold mb-1 block text-black">Type</label>
+            <select formControlName="type"
+                class="border py-2 px-3 rounded focus:outline-none text-black focus:border-blue-500 w-full">
+                <option value="Web Design">Web Design</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Graphic Design">Graphic Design</option>
+                <option value="Software Development">Software Development</option>
+                <option value="Software Testing">Software Testing</option>
+                <option value="Documentation">Documentation</option>
+            </select>
+            <div *ngIf="taskForm.get('type')?.invalid && taskForm.get('type')?.touched"
+                class="text-red-500 text-xs mt-1">Type is required</div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button type="submit"
+                class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                Create
+            </button>
+            <button type="button" (click)="formClose.emit()"
+                class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                Cancel
+            </button>
+        </div>
+    </form>
+    <div class="mt-8" *ngIf="suggestions.length">
+        <div class="flex justify-between">
+            <h4 class="text-xl font-semibold">Similar tasks</h4>
+        </div>
+        <div class="mt-4 space-y-2">
+            <div *ngFor="let task of suggestions" class="border p-4 rounded">
+                <div class="font-semibold">#{{task.taskNo}}: {{task.title}}</div>
+                <div>{{task.description}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <h3>Create a task</h3>
+<form clrForm *ngIf="taskForm" [formGroup]="taskForm" (ngSubmit)="addTask()">
+ <clr-input-container>
+ <label>Title</label>
+ <input clrInput formControlName="title" />
+ <clr-control-error>Title is required
+</clr-control-error>
+ </clr-input-container>
+ <clr-textarea-container>
+ <label>Description</label>
+ <textarea clrTextarea 
+ formControlName="description"></textarea>
+ </clr-textarea-container>
+ <clr-radio-container clrInline>
+    <label>Priority</label>
+    <clr-radio-wrapper>
+    <input type="radio" value="low" clrRadio 
+    formControlName="priority" />
+    <label>Low</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+    <input type="radio" value="high" clrRadio 
+    formControlName="priority" />
+    <label>High</label>
+    </clr-radio-wrapper>
+    <clr-control-error>Priority is required
+    </clr-control-error>
+    </clr-radio-container>
+    <clr-select-container>
+    <label>Type</label>
+    <select clrSelect formControlName="type">
+        <option value="Web Design">Web Design</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Graphic Design">Graphic Design</option>
+        <option value="Software Development">Software Development</option>
+        <option value="Software Testing">Software Testing</option>
+        <option value="Documentation">Documentation</option>
+    </select>
+    <clr-control-error>Type is required
+    </clr-control-error>
+    </clr-select-container>
+    <button class="btn btn-primary bg-green-600 mr-2" type="submit">Create</button>
+    <button class="btn bg-red-600 ml-2" type="button" (click)="formClose.emit()">Cancel</button>
+ </form>
+ <div class="clr-row" *ngIf="suggestions.length">
+    <div class="clr-col-lg-2"></div>
+    <div class="clr-col-lg-6">
+    <clr-stack-view>
+    <clr-stack-header>Similar tasks
+    </clr-stack-header>
+    <clr-stack-block *ngFor="let task of 
+    suggestions">
+    <clr-stack-label>#{{task.taskNo}}: 
+    {{task.title}}</clr-stack-label>
+    <clr-stack-content>{{task.description}}
+    </clr-stack-content>
+    </clr-stack-block>
+    </clr-stack-view>
+    </div>
+</div>
+ -->

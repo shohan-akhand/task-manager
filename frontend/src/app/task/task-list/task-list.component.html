@@ -1,0 +1,47 @@
+<ng-container *ngIf="showReportTask === false">
+    <div class="mt-4">
+        <table class="min-w-full border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border-b py-2 px-4">Task No</th>
+                    <th class="border-b py-2 px-4">Type</th>
+                    <th class="border-b py-2 px-4">Title</th>
+                    <th class="border-b py-2 px-4">Description</th>
+                    <th class="border-b py-2 px-4">Priority</th>
+                    <th class="border-b py-2 px-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of tasks" class="text-center">
+                    <td class="border-b py-2 px-4">{{ task.taskNo }}</td>
+                    <td class="border-b py-2 px-4">{{ task.type }}</td>
+                    <td class="border-b py-2 px-4">{{ task.title }}</td>
+                    <td class="border-b py-2 px-4">{{ task.description }}</td>
+                    <td class="border-b py-2 px-4">
+                        <span [class]="{'label label-danger': task.priority === 'high', 'label': task.priority === 'low'}">
+                            {{ task.priority }}
+                        </span>
+                    </td>
+                    <td class="border-b py-2 px-4">
+                        <button class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                            (click)="selectedTask = task">Delete</button>
+                        <button class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        (click)="showReportTask = true">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-center py-2">Total tasks: {{ tasks.length }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="flex justify-center mt-4">
+        <button class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                (click)="showReportTask = true">Add new task</button>
+    </div>    
+</ng-container>
+<app-task-report *ngIf="showReportTask == true" (formClose)="onCloseReport()"></app-task-report>
+<app-confirm-dialog *ngIf="selectedTask" [taskNo]="selectedTask.taskNo" (confirm)="onConfirm($event)">
+</app-confirm-dialog>
